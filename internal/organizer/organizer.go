@@ -24,6 +24,7 @@ type Result struct {
 	Errors         []error
 }
 
+// Organizer orchestrates the scanning, grouping by strategy and moving the files
 type Organizer struct {
 	result Result
 	cfg    Config
