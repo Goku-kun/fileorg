@@ -39,7 +39,7 @@ type SizeStrategy struct {
 func (s *SizeStrategy) Categorize(file FileInfo) string {
 	size := file.Size
 
-	if size <= smallLimit {
+	if size < smallLimit {
 		return "small"
 	}
 
