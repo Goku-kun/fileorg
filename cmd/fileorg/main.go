@@ -45,9 +45,19 @@ func main() {
 		println("Dry run mode enabled. No changes will be made.")
 	}
 
+	var strategy organizer.Strategy
+	switch by {
+	case "extension":
+		strategy = &organizer.ExtensionStrategy{}
+	default:
+		fmt.Fprintf(os.Stderr, "Strategy not found. Exiting...")
+		os.Exit(1)
+		return
+	}
+
 	cfg := organizer.Config{
 		SourceDir: postitionalArgs[0],
-		Strategy:  by,
+		Strategy:  strategy,
 		DryRun:    isDryRun,
 		Verbose:   isVerbose,
 	}
