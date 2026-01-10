@@ -3,7 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"slices"
+
+	"github.com/Goku-kun/fileorg/internal/organizer"
 )
 
 func main() {
@@ -19,29 +22,37 @@ func main() {
 
 	flag.Parse()
 
-	dirPath := flag.Args()
-	fmt.Println("Directory path:", dirPath)
+	postitionalArgs := flag.Args()
+
+	if len(postitionalArgs) == 0 {
+		fmt.Fprintf(os.Stderr, "No valid directory path supplied. Exiting...")
+		os.Exit(1)
+	}
 
 	isDryRun := dryRun || n
 	isVerbose := verbose || v
-
-	if isVerbose {
-		println("Verbose mode enabled.")
-	}
-
-	println("Sorting files by:", by)
 
 	validByOptions := []string{"extension", "date", "size"}
 	isValidBy := slices.Contains(validByOptions, by)
 
 	if !isValidBy {
-		fmt.Println("Invalid value for --by. Valid options are 'extension', 'date', or 'size'.")
+		fmt.Fprintf(os.Stderr, "Invalid value for --by. Valid options are 'extension', 'date', or 'size'.")
+		os.Exit(1)
 		return
 	}
 
 	if isDryRun {
 		println("Dry run mode enabled. No changes will be made.")
-	} else {
-		println("Executing with changes.")
 	}
+
+	cfg := organizer.Config{
+		SourceDir: postitionalArgs[0],
+		Strategy:  by,
+		DryRun:    isDryRun,
+		Verbose:   isVerbose,
+	}
+
+	fmt.Printf("Config: %+v\n", cfg)
+
+	organizer.NewOrganizer(cfg)
 }
