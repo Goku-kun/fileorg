@@ -49,6 +49,10 @@ func main() {
 	switch by {
 	case "extension":
 		strategy = &organizer.ExtensionStrategy{}
+	case "date":
+		strategy = &organizer.ModifiedDateStrategy{}
+	case "size":
+		strategy = &organizer.SizeStrategy{}
 	default:
 		fmt.Fprintf(os.Stderr, "Strategy not found. Exiting...")
 		os.Exit(1)
@@ -62,7 +66,10 @@ func main() {
 		Verbose:   isVerbose,
 	}
 
-	fmt.Printf("Config: %+v\n", cfg)
+	o := organizer.NewOrganizer(cfg)
+	result := o.Organize()
+	if !cfg.DryRun {
+		result.PrintSummary()
+	}
 
-	organizer.NewOrganizer(cfg)
 }
