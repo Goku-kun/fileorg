@@ -67,10 +67,10 @@ func (o *Organizer) scanFiles() ([]FileInfo, error) {
 		ext := strings.ToLower(strings.TrimPrefix(filepath.Ext(info.Name()), "."))
 		fullPath := filepath.Join(dir, info.Name())
 		fileInfo := FileInfo{
-			Name: info.Name(),
-			Size: info.Size(),
-			Path: fullPath,
-			Ext:  ext,
+			Name:    info.Name(),
+			Size:    info.Size(),
+			Path:    fullPath,
+			Ext:     ext,
 			ModTime: info.ModTime(),
 		}
 
