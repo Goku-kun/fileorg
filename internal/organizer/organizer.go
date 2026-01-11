@@ -130,13 +130,13 @@ func (o *Organizer) moveFiles(folders map[string][]FileInfo) {
 }
 
 func (o *Organizer) Organize() Result {
-	file, err := o.scanFiles()
+	files, err := o.scanFiles()
 	if err != nil {
 		o.result.Errors = append(o.result.Errors, err)
 		return o.result
 	}
 
-	folders := o.groupByStrategy(file)
+	folders := o.groupByStrategy(files)
 	o.moveFiles(folders)
 
 	return o.result
